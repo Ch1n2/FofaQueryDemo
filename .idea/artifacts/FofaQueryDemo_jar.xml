@@ -3,7 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/FofaQueryDemo_jar</output-path>
     <root id="archive" name="FofaQueryDemo.jar">
       <element id="module-output" name="FofaQueryDemo" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../Desktop/mysql-connector-java-5.1.39-bin.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/mysql-connector-java-5.1.39-bin.jar" path-in-jar="/" />
+      <element id="library" level="project" name="mysql-connector-java-5.1.39-bin" />
     </root>
   </artifact>
 </component>

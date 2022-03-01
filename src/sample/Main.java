@@ -78,7 +78,7 @@ public class Main extends Application {
 
         //预定义文本创建文本域
         final TextField textField1 = new TextField("hi,I'm CJ.");
-        //textField.setPromptText("giao giao giao.");
+        textField1.setPromptText("hi,I'm CJ.");
         //textField1.setPrefColumnCount(15);
         GridPane.setConstraints(textField1,1,1);
         gridPane.getChildren().add(textField1);
@@ -113,8 +113,8 @@ public class Main extends Application {
                     fofaquery = connMySql.ConnMySqlQuery(textField.getText());
                     System.out.println(fofaquery);
                     if (!fofaquery.equals("null\n" +
-                            "旧规则：null\n" +
-                            "新规则：null")){
+                            "旧规则：app=\"null\"\n" +
+                            "新规则：app=\"null\"")){
 //                        label2.setText(fofaquery);
                         output.setText(fofaquery);
                     }else {
