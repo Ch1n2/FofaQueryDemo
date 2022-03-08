@@ -18,6 +18,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,10 +52,6 @@ public class Main extends Application {
         GridPane.setConstraints(label1,0,0);
         gridPane.getChildren().add(label1);
 
-//        Label label2 = new Label("giao giao giao");
-//        GridPane.setConstraints(label2,0,3);
-//        GridPane.setColumnSpan(label2, 3);
-//        gridPane.getChildren().add(label2);
 
         //创建一个TextArea对象用于接收返回值
         TextArea output = new TextArea("Dear Portland!");
@@ -100,7 +100,6 @@ public class Main extends Application {
                     //利用正则将fofaquery的app=""去掉
                     Pattern p = Pattern.compile("app=\"(.*)?\"");
                     Matcher m = p.matcher(textField.getText());
-//                    System.out.println(m.matches());
                     if (m.matches()){
                         //去掉app=""
                         m.group().replace("\"","");
@@ -115,10 +114,8 @@ public class Main extends Application {
                     if (!fofaquery.equals("null\n" +
                             "旧规则：app=\"null\"\n" +
                             "新规则：app=\"null\"")){
-//                        label2.setText(fofaquery);
                         output.setText(fofaquery);
                     }else {
-//                        label2.setText("not find!");
                         output.setText("not find!");
                     }
                 }
@@ -132,29 +129,64 @@ public class Main extends Application {
                 textField.clear();
                 textField1.clear();
                 output.clear();
-//                label2.setText("");
             }
         });
-
-        //使用HBox布局Label和TextField
-//        HBox hb = new HBox();
-//        hb.getChildren().addAll(label1,textField);
-//        hb.getChildren().addAll(label1,textField1);
-//        hb.setSpacing(10);
 
         primaryStage.show();
     }
 
+    public static String execCmd(String... cmd) throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        //得到字节流
+        InputStream inputStream = runtime.exec(cmd).getInputStream();
+        //将字节流转化成字符流，并指定字符集
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream,"GBK");
+        //将字符流以缓存的形式一行一行的输出
+        BufferedReader bf = new BufferedReader(inputStreamReader);
+        StringBuilder result = new StringBuilder();
+        String newLine = "";
 
-    public static void main(String[] args) {
-        //启动MySQL
+        while ((newLine = bf.readLine()) != null) {
+//            System.out.println("enter");
+            result.append(newLine).append("\n");
+        }
+        System.out.println(result);
+        inputStream.close();
 
+        return result.toString();
+    }
 
+    public static void main(String[] args) throws IOException {
 
+//        String[] cmdStart = {"cmd","/c",".\\nircmd.exe elevate net start mysql57"};
+        String[] cmdStart = {"cmd","/c",".\\nircmd.exe","elevate","net","start","mysql57"};
+        String[] cmdStart2 = {"net","start","mysql57"};
+        String[] cmdStop2 = {"net","stop","mysql57"};
+        String cmd3 = "net start mysql57";
+        String cmd34 = "cmd /c net start mysql57";
+
+//        Process p = new ProcessBuilder(cmdStart).start();
+//        InputStream stream = p.getInputStream();
+//
+//        InputStreamReader inputStreamReader = new InputStreamReader(stream,"GBK");
+//        System.out.println("将字节流转化成字符流，并指定字符集");
+//        //将字符流以缓存的形式一行一行的输出
+//        BufferedReader bf = new BufferedReader(inputStreamReader);
+//        System.out.println("将字符流以缓存的形式一行一行的输出");
+//        String result = "";
+//        String newLine = "";
+//
+//        while ((newLine = bf.readLine()) != null) {
+//            System.out.println("进入。。。");
+//            result += newLine + "\n";
+//        }
+//        System.out.println(result);
+
+        //启动MySQL服务
+//        String[] cmd = {"cmd","/C","runAs","/user:administrator","net start"};
+        execCmd(cmdStart2);
+//        String cmdStart = ".\\nircmd.exe elevate net start mysql57";
         launch(args);
-
-//        String fofaquery = "华天动力-OA8000";
-//        ConnMySql connMySql = new ConnMySql();
-//        connMySql.ConnMySqlQuery(fofaquery);
+        execCmd(cmdStop2);
     }
 }
